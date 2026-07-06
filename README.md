@@ -118,18 +118,10 @@ To minimize token costs and eliminate mathematical hallucination risks, time-ser
 
 ## Business Impact
 
-**Before Automation:**
-- Manual data consolidation: 15-20 hours/week
-- Decision latency: 7+ days
-- Error rate: 8% of metrics had calculation errors
-- Risk blindness: Issues caught after 3-5 days of damage
-
-**After Automation:**
 - Time to reconciled metrics: <30 minutes (fully autonomous)
 - Decision latency: Real-time (can monitor hourly if needed)
 - Error rate: <0.5% (standardized logic)
 - Risk detection: Issues flagged within 4 hours of occurrence
-- Business outcome: Estimated $120k+ prevented revenue loss through early risk detection
 
 ---
 
