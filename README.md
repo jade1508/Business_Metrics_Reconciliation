@@ -29,9 +29,87 @@ while **native Google Sheets formulas** compute fast, accurate time-series trend
 ### Make.com Automation Flow
 <img width="1733" height="218" alt="image" src="https://github.com/user-attachments/assets/b89ebb1b-7b75-4a40-9354-74fb797e0998" />
 
-
 ### Final Audit Dashboard Output
 <img width="1863" height="608" alt="image" src="https://github.com/user-attachments/assets/ac6fb02a-6e4c-47e8-b97e-5deb3ea6cdc7" />
+
+## 🤖 AI Engine Setup & Core Prompt
+The core analytical intelligence of this workflow is powered by the **Make AI Toolkit**. Instead of using hardcoded programming scripts, an advanced, context-aware prompt enforces multi-source structural alignment and granular root-cause reporting.
+
+To replicate the AI block logic, deploy the following prompt inside your LLM module:
+
+```text
+You are a Senior Financial Auditor and Data Integrity Expert. 
+
+Please perform a business metrics reconciliation across three department data sources and evaluate operational trends/risks.
+
+### INPUT DATA IN JSON FORMAT:
+- Finance Department Source: 
+[Finance Array Data]
+
+- Product Department Source:
+[Product Array Data]
+
+- Operations Department Source:
+[Operations Array Data]
+
+### DATA STRUCTURE NOTE:
+The input data rows are formatted as indexed objects (e.g., {"0":"Month", "1":"Metric1", ...}). Skip the header row (row index 0 containing column names) for each source, and match rows dynamically by the Month string value (e.g., "Jan24", "Feb24").
+
+### AUDIT & ANALYSIS PROCESS:
+1. METRIC ALIGNMENT & BASING:
+   - For each month, extract values from all 3 sources:
+     * CAC: Finance {"1"}, Product {"1"}, Operations {"1"}
+     * LTV: Finance {"2"}, Product {"2"}, Operations {"2"}
+     * Churn: Finance {"3"}, Product {"3"}, Operations {"3"} (Strip the "%" sign for calculations).
+   - Calculate the average baseline for each metric (CAC_avg, LTV_avg, Churn_avg) across the 3 sources.
+
+2. DISCREPANCY & SEVERITY AUDIT:
+   - Identify variance of any source against the calculated average baseline.
+   - If any source deviates > 5% from the average, write a summary detailing the exact differences in "discrepancies". If no variance, write exactly "No discrepancy".
+   - Assign "severity_level": "High" if any variance > 10%; "Medium" if between 5% and 10%; "Low" if <= 5% (or if data is clean).
+
+3. OPERATION RISK FLAGS:
+   - Based on the calculated averages row-by-row, apply strict comma-separated "risk_flags" (or exactly "No Risk" if none apply):
+     * If CAC_avg is abnormally high (>300) = "Cost Inflation Risk"
+     * If LTV_avg drops significantly (<1200) = "Value Erosion Risk"
+     * If Churn_avg is high (>2.8) = "Retention Risk"
+
+4. ADVANCED INSIGHTS & RECOMMENDED DEFINITION LOGIC:
+   - For "recommended_definition":
+     * IF DATA IS CLEAN (No discrepancy): Provide a brief, strategic operational insight based on the month's metrics trend (e.g., "Metrics are stable; CAC efficiency is maintained while LTV shows healthy growth."). Do NOT just write "None".
+     * IF A DISCREPANCY EXISTS: Do NOT just name the department. You MUST construct a text statement incorporating:
+       1) Which department's tracking logic should be trusted for the final definition and why.
+       2) A professional "Root Cause" hypothesis (Nguyên nhân gốc rễ) explaining why the metrics diverged (e.g., Timing gaps in revenue recognition, Product using predictive modeling vs Finance using realized cash basis, or Tool tracking discrepancies like Mixpanel vs ERP).
+       3) Actionable data governance recommendation to align the sources going forward.
+
+### OUTPUT FORMAT CONSTRAINT:
+You MUST respond with a single, valid JSON object matching the exact schema below. 
+CRITICAL: Do NOT wrap the JSON in markdown code blocks (No ```json or ```). Do NOT include any conversational text. Return ONLY the raw JSON string.
+
+### TARGET SCHEMA:
+{
+  "reconciliation": [
+    {
+      "month": "string",
+      "CAC_avg": "number",
+      "LTV_avg": "number",
+      "Churn_avg": "number",
+      "severity_level": "string ('High', 'Medium', or 'Low')",
+      "discrepancies": "string",
+      "recommended_definition": "string",
+      "risk_flags": "string"
+    }
+  ]
+}
+
+📊 Google Sheets Hybrid Logic (Columns I to Q)
+To minimize token costs and eliminate mathematical hallucination risks, time-series calculations are offloaded directly to Google Sheets using dynamic native formulas:
+
+MoM% Changes (Columns I, L, O): Evaluates sequential growth trajectories using: =(Baseline_Current - Baseline_Previous) / Baseline_Previous.
+
+3-Month Moving Average (Columns J, M, P): Smooths out seasonal fluctuations using: =AVERAGE(Metric_Row-2:Metric_Row).
+
+Directional Trends (Columns K, N, Q): Dynamically maps trajectories to localized indicators using nested IF logical states.
 
 ---
 
