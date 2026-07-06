@@ -101,6 +101,7 @@ CRITICAL: Do NOT wrap the JSON in markdown code blocks (No ```json or ```). Do N
     }
   ]
 }
+```
 
 📊 Google Sheets Hybrid Logic (Columns I to Q)
 To minimize token costs and eliminate mathematical hallucination risks, time-series calculations are offloaded directly to Google Sheets using dynamic native formulas:
