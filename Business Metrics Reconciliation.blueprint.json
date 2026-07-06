@@ -1,0 +1,960 @@
+{
+    "name": "Business Metrics Reconciliation",
+    "flow": [
+        {
+            "id": 2,
+            "module": "google-sheets:getSheetContent",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 7075391
+            },
+            "mapper": {
+                "from": "drive",
+                "range": "A:D",
+                "select": "list",
+                "sheetId": "Source_Finance",
+                "spreadsheetId": "/1irjJKgpthe9bZD5NesGPzv3h1Q_hKfmp2tR-Uqmijgw",
+                "tableFirstRow": "A1:D1",
+                "includesHeaders": true,
+                "valueRenderOption": "FORMATTED_VALUE",
+                "dateTimeRenderOption": "FORMATTED_STRING"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 34,
+                    "y": -2
+                },
+                "restore": {
+                    "expect": {
+                        "from": {
+                            "label": "My Drive"
+                        },
+                        "select": {
+                            "label": "Search by path"
+                        },
+                        "sheetId": {
+                            "label": "Source_Finance"
+                        },
+                        "spreadsheetId": {
+                            "path": [
+                                "AIProject_BusinessReports"
+                            ]
+                        },
+                        "includesHeaders": {
+                            "mode": "chose"
+                        },
+                        "valueRenderOption": {
+                            "mode": "chose",
+                            "label": "Formatted value"
+                        },
+                        "dateTimeRenderOption": {
+                            "mode": "chose",
+                            "label": "Formatted string"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google"
+                            },
+                            "label": "My Google connection (le.mngoc@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Search Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "list",
+                                "fromAll",
+                                "map"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "range",
+                        "type": "text",
+                        "label": "Range",
+                        "required": true
+                    },
+                    {
+                        "name": "includesHeaders",
+                        "type": "boolean",
+                        "label": "Table contains headers",
+                        "required": true
+                    },
+                    {
+                        "name": "valueRenderOption",
+                        "type": "select",
+                        "label": "Value render option",
+                        "validate": {
+                            "enum": [
+                                "FORMATTED_VALUE",
+                                "UNFORMATTED_VALUE",
+                                "FORMULA"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "dateTimeRenderOption",
+                        "type": "select",
+                        "label": "Date and time render option",
+                        "validate": {
+                            "enum": [
+                                "SERIAL_NUMBER",
+                                "FORMATTED_STRING"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "type": "select",
+                        "label": "Drive",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "spreadsheetId",
+                        "type": "file",
+                        "label": "Spreadsheet Name",
+                        "required": true
+                    },
+                    {
+                        "name": "sheetId",
+                        "type": "select",
+                        "label": "Sheet Name",
+                        "required": true
+                    },
+                    {
+                        "name": "tableFirstRow",
+                        "type": "text",
+                        "label": "Row with headers"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "__IMTLENGTH__",
+                        "type": "uinteger",
+                        "label": "Total number of bundles"
+                    },
+                    {
+                        "name": "__IMTINDEX__",
+                        "type": "uinteger",
+                        "label": "Bundle order position"
+                    },
+                    {
+                        "name": "__ROW_NUMBER__",
+                        "type": "number",
+                        "label": "Row number"
+                    },
+                    {
+                        "name": "__SPREADSHEET_ID__",
+                        "type": "text",
+                        "label": "Spreadsheet ID"
+                    },
+                    {
+                        "name": "__SHEET__",
+                        "type": "text",
+                        "label": "Sheet"
+                    },
+                    {
+                        "name": "0",
+                        "type": "text",
+                        "label": "Month (A)"
+                    },
+                    {
+                        "name": "1",
+                        "type": "text",
+                        "label": "CAC (B)"
+                    },
+                    {
+                        "name": "2",
+                        "type": "text",
+                        "label": "LTV (C)"
+                    },
+                    {
+                        "name": "3",
+                        "type": "text",
+                        "label": "Churn_Rate (D)"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 3,
+            "module": "builtin:BasicAggregator",
+            "version": 1,
+            "parameters": {
+                "feeder": 2
+            },
+            "mapper": {
+                "0": "{{2.`0`}}",
+                "1": "{{2.`1`}}",
+                "2": "{{2.`2`}}",
+                "3": "{{2.`3`}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "extra": {
+                        "feeder": {
+                            "label": "Google Sheets - Get Range Values [2]"
+                        },
+                        "target": {
+                            "label": "Custom"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "id": 5,
+            "module": "google-sheets:getSheetContent",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 7075391
+            },
+            "mapper": {
+                "from": "drive",
+                "range": "A:D",
+                "select": "list",
+                "sheetId": "Source_Product",
+                "spreadsheetId": "/1irjJKgpthe9bZD5NesGPzv3h1Q_hKfmp2tR-Uqmijgw",
+                "tableFirstRow": "A1:D1",
+                "includesHeaders": true,
+                "valueRenderOption": "FORMATTED_VALUE",
+                "dateTimeRenderOption": "FORMATTED_STRING"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 565,
+                    "y": 6
+                },
+                "restore": {
+                    "expect": {
+                        "from": {
+                            "label": "My Drive"
+                        },
+                        "select": {
+                            "label": "Search by path"
+                        },
+                        "sheetId": {
+                            "label": "Source_Product"
+                        },
+                        "spreadsheetId": {
+                            "path": [
+                                "AIProject_BusinessReports"
+                            ]
+                        },
+                        "includesHeaders": {
+                            "mode": "chose"
+                        },
+                        "valueRenderOption": {
+                            "mode": "chose",
+                            "label": "Formatted value"
+                        },
+                        "dateTimeRenderOption": {
+                            "mode": "chose",
+                            "label": "Formatted string"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google"
+                            },
+                            "label": "My Google connection (le.mngoc@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Search Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "list",
+                                "fromAll",
+                                "map"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "range",
+                        "type": "text",
+                        "label": "Range",
+                        "required": true
+                    },
+                    {
+                        "name": "includesHeaders",
+                        "type": "boolean",
+                        "label": "Table contains headers",
+                        "required": true
+                    },
+                    {
+                        "name": "valueRenderOption",
+                        "type": "select",
+                        "label": "Value render option",
+                        "validate": {
+                            "enum": [
+                                "FORMATTED_VALUE",
+                                "UNFORMATTED_VALUE",
+                                "FORMULA"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "dateTimeRenderOption",
+                        "type": "select",
+                        "label": "Date and time render option",
+                        "validate": {
+                            "enum": [
+                                "SERIAL_NUMBER",
+                                "FORMATTED_STRING"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "type": "select",
+                        "label": "Drive",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "spreadsheetId",
+                        "type": "file",
+                        "label": "Spreadsheet Name",
+                        "required": true
+                    },
+                    {
+                        "name": "sheetId",
+                        "type": "select",
+                        "label": "Sheet Name",
+                        "required": true
+                    },
+                    {
+                        "name": "tableFirstRow",
+                        "type": "text",
+                        "label": "Row with headers"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "__IMTLENGTH__",
+                        "type": "uinteger",
+                        "label": "Total number of bundles"
+                    },
+                    {
+                        "name": "__IMTINDEX__",
+                        "type": "uinteger",
+                        "label": "Bundle order position"
+                    },
+                    {
+                        "name": "__ROW_NUMBER__",
+                        "type": "number",
+                        "label": "Row number"
+                    },
+                    {
+                        "name": "__SPREADSHEET_ID__",
+                        "type": "text",
+                        "label": "Spreadsheet ID"
+                    },
+                    {
+                        "name": "__SHEET__",
+                        "type": "text",
+                        "label": "Sheet"
+                    },
+                    {
+                        "name": "0",
+                        "type": "text",
+                        "label": "Month (A)"
+                    },
+                    {
+                        "name": "1",
+                        "type": "text",
+                        "label": "Customer_Acq_Cost (B)"
+                    },
+                    {
+                        "name": "2",
+                        "type": "text",
+                        "label": "Customer_Lifetime_Value (C)"
+                    },
+                    {
+                        "name": "3",
+                        "type": "text",
+                        "label": "Monthly_Churn (D)"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "module": "builtin:BasicAggregator",
+            "version": 1,
+            "parameters": {
+                "feeder": 5
+            },
+            "mapper": {
+                "0": "{{5.`0`}}",
+                "1": "{{5.`1`}}",
+                "2": "{{5.`2`}}",
+                "3": "{{5.`3`}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 832,
+                    "y": 6
+                },
+                "restore": {
+                    "extra": {
+                        "feeder": {
+                            "label": "Google Sheets - Get Range Values [5]"
+                        },
+                        "target": {
+                            "label": "Custom"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "id": 7,
+            "module": "google-sheets:getSheetContent",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 7075391
+            },
+            "mapper": {
+                "from": "drive",
+                "range": "A:D",
+                "select": "list",
+                "sheetId": "Source_Operations",
+                "spreadsheetId": "/1irjJKgpthe9bZD5NesGPzv3h1Q_hKfmp2tR-Uqmijgw",
+                "tableFirstRow": "A1:D1",
+                "includesHeaders": true,
+                "valueRenderOption": "FORMATTED_VALUE",
+                "dateTimeRenderOption": "FORMATTED_STRING"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1100,
+                    "y": -5
+                },
+                "restore": {
+                    "expect": {
+                        "from": {
+                            "label": "My Drive"
+                        },
+                        "select": {
+                            "label": "Search by path"
+                        },
+                        "sheetId": {
+                            "label": "Source_Operations"
+                        },
+                        "spreadsheetId": {
+                            "path": [
+                                "AIProject_BusinessReports"
+                            ]
+                        },
+                        "includesHeaders": {
+                            "mode": "chose"
+                        },
+                        "valueRenderOption": {
+                            "mode": "chose",
+                            "label": "Formatted value"
+                        },
+                        "dateTimeRenderOption": {
+                            "mode": "chose",
+                            "label": "Formatted string"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google"
+                            },
+                            "label": "My Google connection (le.mngoc@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Search Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "list",
+                                "fromAll",
+                                "map"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "range",
+                        "type": "text",
+                        "label": "Range",
+                        "required": true
+                    },
+                    {
+                        "name": "includesHeaders",
+                        "type": "boolean",
+                        "label": "Table contains headers",
+                        "required": true
+                    },
+                    {
+                        "name": "valueRenderOption",
+                        "type": "select",
+                        "label": "Value render option",
+                        "validate": {
+                            "enum": [
+                                "FORMATTED_VALUE",
+                                "UNFORMATTED_VALUE",
+                                "FORMULA"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "dateTimeRenderOption",
+                        "type": "select",
+                        "label": "Date and time render option",
+                        "validate": {
+                            "enum": [
+                                "SERIAL_NUMBER",
+                                "FORMATTED_STRING"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "type": "select",
+                        "label": "Drive",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "spreadsheetId",
+                        "type": "file",
+                        "label": "Spreadsheet Name",
+                        "required": true
+                    },
+                    {
+                        "name": "sheetId",
+                        "type": "select",
+                        "label": "Sheet Name",
+                        "required": true
+                    },
+                    {
+                        "name": "tableFirstRow",
+                        "type": "text",
+                        "label": "Row with headers"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "__IMTLENGTH__",
+                        "type": "uinteger",
+                        "label": "Total number of bundles"
+                    },
+                    {
+                        "name": "__IMTINDEX__",
+                        "type": "uinteger",
+                        "label": "Bundle order position"
+                    },
+                    {
+                        "name": "__ROW_NUMBER__",
+                        "type": "number",
+                        "label": "Row number"
+                    },
+                    {
+                        "name": "__SPREADSHEET_ID__",
+                        "type": "text",
+                        "label": "Spreadsheet ID"
+                    },
+                    {
+                        "name": "__SHEET__",
+                        "type": "text",
+                        "label": "Sheet"
+                    },
+                    {
+                        "name": "0",
+                        "type": "text",
+                        "label": "Month (A)"
+                    },
+                    {
+                        "name": "1",
+                        "type": "text",
+                        "label": "CAC_Actual (B)"
+                    },
+                    {
+                        "name": "2",
+                        "type": "text",
+                        "label": "LTV_Target (C)"
+                    },
+                    {
+                        "name": "3",
+                        "type": "text",
+                        "label": "Attrition (D)"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 8,
+            "module": "builtin:BasicAggregator",
+            "version": 1,
+            "parameters": {
+                "feeder": 7
+            },
+            "mapper": {
+                "0": "{{7.`0`}}",
+                "1": "{{7.`1`}}",
+                "2": "{{7.`2`}}",
+                "3": "{{7.`3`}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1372,
+                    "y": -2
+                },
+                "restore": {
+                    "extra": {
+                        "feeder": {
+                            "label": "Google Sheets - Get Range Values [7]"
+                        },
+                        "target": {
+                            "label": "Custom"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "id": 10,
+            "module": "ai-tools:Ask",
+            "version": 2,
+            "parameters": {
+                "model": "medium",
+                "makeConnectionId": 7075452
+            },
+            "mapper": {
+                "input": "You are a Senior Financial Auditor and Data Integrity Expert. \r\n\r\nPlease perform a business metrics reconciliation and advanced operational audit across three department data sources.\r\n\r\n### INPUT DATA IN JSON FORMAT:\r\n- Finance Department Source: \r\n{{3.array}}\r\n\r\n- Product Department Source:\r\n{{6.array}}\r\n\r\n- Operations Department Source:\r\n{{8.array}}\r\n\r\n### DATA STRUCTURE NOTE:\r\nThe input data rows are formatted as indexed objects (e.g., {\"0\":\"Month\", \"1\":\"Metric1\", ...}). Skip the header row (row index 0 containing column names) for each source, and match rows dynamically by the Month string value (e.g., \"Jan24\", \"Feb24\").\r\n\r\n### AUDIT & ANALYSIS PROCESS:\r\n1. METRIC ALIGNMENT & BASING:\r\n   - For each month, extract values from all 3 sources:\r\n     * CAC: Finance {\"1\"}, Product {\"1\"}, Operations {\"1\"}\r\n     * LTV: Finance {\"2\"}, Product {\"2\"}, Operations {\"2\"}\r\n     * Churn: Finance {\"3\"}, Product {\"3\"}, Operations {\"3\"} (Strip the \"%\" sign for calculations).\r\n   - Calculate the average baseline for each metric (CAC_avg, LTV_avg, Churn_avg) across the 3 sources.\r\n\r\n2. DISCREPANCY & SEVERITY AUDIT:\r\n   - Identify variance of any source against the calculated average baseline.\r\n   - If any source deviates > 5% from the average, write a summary detailing the exact differences in \"discrepancies\". If no variance, write exactly \"No discrepancy\".\r\n   - Assign \"severity_level\": \"High\" if any variance > 10%; \"Medium\" if between 5% and 10%; \"Low\" if <= 5% (or if data is clean).\r\n\r\n3. OPERATION RISK FLAGS:\r\n   - Based on the calculated averages row-by-row, apply strict comma-separated \"risk_flags\" (or exactly \"No Risk\" if none apply):\r\n     * If CAC_avg is abnormally high (>300) = \"Cost Inflation Risk\"\r\n     * If LTV_avg drops significantly (<1200) = \"Value Erosion Risk\"\r\n     * If Churn_avg is high (>2.8) = \"Retention Risk\"\r\n\r\n4. ADVANCED INSIGHTS & RECOMMENDED DEFINITION LOGIC:\r\n   - For \"recommended_definition\":\r\n     * IF DATA IS CLEAN (No discrepancy): Provide a brief, strategic operational insight based on the month's metrics trend (e.g., \"Metrics are stable; CAC efficiency is maintained while LTV shows healthy growth.\"). Do NOT just write \"None\".\r\n     * IF A DISCREPANCY EXISTS: Do NOT just name the department. You MUST construct a text statement incorporating:\r\n       1) Which department's tracking logic should be trusted for the final definition and why.\r\n       2) A professional \"Root Cause\" hypothesis (Nguyên nhân gốc rễ) explaining why the metrics diverged (e.g., Timing gaps in revenue recognition, Product using predictive modeling vs Finance using realized cash basis, or Tool tracking discrepancies like Mixpanel vs ERP).\r\n       3) Actionable data governance recommendation to align the sources going forward.\r\n\r\n### OUTPUT FORMAT CONSTRAINT:\r\nYou MUST respond with a single, valid JSON object matching the exact schema below. \r\nCRITICAL: Do NOT wrap the JSON in markdown code blocks (No ```json or ```). Do NOT include any conversational text. Return ONLY the raw JSON string.\r\n\r\n### TARGET SCHEMA:\r\n{\r\n  \"reconciliation\": [\r\n    {\r\n      \"month\": \"string\",\r\n      \"CAC_avg\": \"number\",\r\n      \"LTV_avg\": \"number\",\r\n      \"Churn_avg\": \"number\",\r\n      \"severity_level\": \"string ('High', 'Medium', or 'Low')\",\r\n      \"discrepancies\": \"string\",\r\n      \"recommended_definition\": \"string\",\r\n      \"risk_flags\": \"string\"\r\n    }\r\n  ]\r\n}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1635,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "model": {
+                            "mode": "chose",
+                            "label": "MediumModel: gpt-5-nano. Reasoning: low. A balanced, quick choice for clearly defined tasks needing reliable answers rather than deep analysis",
+                            "nested": []
+                        },
+                        "makeConnectionId": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "ai-provider"
+                            },
+                            "label": "My Make's AI Provider connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "makeConnectionId",
+                        "type": "account:ai-provider,openai-gpt-3,anthropic-claude,gemini-ai-q9zyjp,ai-agent-foundry-openai,ai-agent-foundry-non-openai,mistral-ai,cohere,groq,ai-agent-xai,amazon-bedrock,ai-agent-openai-compatible",
+                        "label": "Connection",
+                        "required": true
+                    },
+                    {
+                        "name": "model",
+                        "type": "select",
+                        "label": "Model",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "input",
+                        "type": "text",
+                        "label": "Text",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 11,
+            "module": "json:ParseJSON",
+            "version": 1,
+            "parameters": {
+                "type": ""
+            },
+            "mapper": {
+                "json": "{{10.answer}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1901,
+                    "y": 9
+                },
+                "restore": {
+                    "parameters": {
+                        "type": {
+                            "label": "Choose a data structure"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "type",
+                        "type": "udt",
+                        "label": "Data structure"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "json",
+                        "type": "text",
+                        "label": "JSON string",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 17,
+            "module": "google-sheets:addMultipleRows",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 7075391
+            },
+            "mapper": {
+                "rows": "{{11.reconciliation}}",
+                "sheetId": "Reconciliation_Output",
+                "spreadsheetId": "1irjJKgpthe9bZD5NesGPzv3h1Q_hKfmp2tR-Uqmijgw",
+                "tableFirstRow": "A1:Z1",
+                "insertDataOption": "INSERT_ROWS",
+                "valueInputOption": "USER_ENTERED",
+                "insertUnformatted": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 2167,
+                    "y": 2
+                },
+                "restore": {
+                    "expect": {
+                        "rows": {
+                            "mode": "edit",
+                            "items": [
+                                {
+                                    "values": {
+                                        "mode": "chose",
+                                        "items": [
+                                            null
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        "sheetId": {
+                            "mode": "edit"
+                        },
+                        "spreadsheetId": {
+                            "rpcSearch": {
+                                "label": "AIProject_BusinessReports",
+                                "value": "1irjJKgpthe9bZD5NesGPzv3h1Q_hKfmp2tR-Uqmijgw"
+                            }
+                        },
+                        "tableFirstRow": {
+                            "label": "A-Z"
+                        },
+                        "insertDataOption": {
+                            "mode": "chose",
+                            "label": "Insert rows"
+                        },
+                        "valueInputOption": {
+                            "mode": "chose",
+                            "label": "User entered"
+                        },
+                        "insertUnformatted": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google"
+                            },
+                            "label": "My Google connection (le.mngoc@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "spreadsheetId",
+                        "type": "text",
+                        "label": "Spreadsheet ID",
+                        "required": true
+                    },
+                    {
+                        "name": "insertUnformatted",
+                        "type": "boolean",
+                        "label": "Unformatted",
+                        "required": true
+                    },
+                    {
+                        "name": "valueInputOption",
+                        "type": "select",
+                        "label": "Value input option"
+                    },
+                    {
+                        "name": "insertDataOption",
+                        "type": "select",
+                        "label": "Insert data option"
+                    },
+                    {
+                        "type": "hidden"
+                    },
+                    {
+                        "mode": "edit",
+                        "name": "sheetId",
+                        "type": "select",
+                        "label": "Sheet Name",
+                        "required": true
+                    },
+                    {
+                        "name": "tableFirstRow",
+                        "type": "select",
+                        "label": "Column range",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "A1:Z1",
+                                "A1:BZ1",
+                                "A1:CZ1",
+                                "A1:DZ1",
+                                "A1:MZ1",
+                                "A1:ZZ1"
+                            ]
+                        }
+                    },
+                    {
+                        "mode": "edit",
+                        "name": "rows",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "values",
+                                    "spec": {
+                                        "type": "text",
+                                        "label": "Column"
+                                    },
+                                    "type": "array",
+                                    "label": "Values",
+                                    "labels": {
+                                        "add": "Add value"
+                                    }
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Row"
+                        },
+                        "type": "array",
+                        "label": "Rows"
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu1.make.com",
+        "notes": []
+    }
+}
