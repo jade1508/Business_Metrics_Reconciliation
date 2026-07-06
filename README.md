@@ -112,7 +112,7 @@ To minimize token costs and eliminate mathematical hallucination risks, time-ser
 
 * Directional Trends (Columns K, N, Q): Dynamically maps trajectories to localized indicators using nested IF logical states.
 
-  Data sample: business_metrics_raw.xlsx*
+*Data sample: business_metrics_raw.xlsx*
 
 ---
 
