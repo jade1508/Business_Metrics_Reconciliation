@@ -106,11 +106,11 @@ CRITICAL: Do NOT wrap the JSON in markdown code blocks (No ```json or ```). Do N
 📊 Google Sheets Hybrid Logic (Columns I to Q)
 To minimize token costs and eliminate mathematical hallucination risks, time-series calculations are offloaded directly to Google Sheets using dynamic native formulas:
 
-MoM% Changes (Columns I, L, O): Evaluates sequential growth trajectories using: =(Baseline_Current - Baseline_Previous) / Baseline_Previous.
+* MoM% Changes (Columns I, L, O): Evaluates sequential growth trajectories using: =(Baseline_Current - Baseline_Previous) / Baseline_Previous.
 
-3-Month Moving Average (Columns J, M, P): Smooths out seasonal fluctuations using: =AVERAGE(Metric_Row-2:Metric_Row).
+* 3-Month Moving Average (Columns J, M, P): Smooths out seasonal fluctuations using: =AVERAGE(Metric_Row-2:Metric_Row).
 
-Directional Trends (Columns K, N, Q): Dynamically maps trajectories to localized indicators using nested IF logical states.
+* Directional Trends (Columns K, N, Q): Dynamically maps trajectories to localized indicators using nested IF logical states.
 
 ---
 
