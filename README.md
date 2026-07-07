@@ -12,6 +12,7 @@ while **native Google Sheets formulas** compute fast, accurate time-series trend
 * **Automation Platform:** Make.com (formerly Integromat)
 * **AI Engine:** Make AI Toolkit (Advanced contextual auditing prompt)
 * **Data Destination:** Google Sheets (Time-series mathematical logic)
+* **Automated Visualization (Optional Extension):** Includes a standalone Python script (src/generate_charts.py) to automatically generate production-ready operational charts from the final reconciled data.
 
 ### Workflow Architecture
 1.  **Data Ingestion:** Fetches asynchronous monthly data arrays from Finance, Product, and Operations spreadsheets.
@@ -31,6 +32,11 @@ while **native Google Sheets formulas** compute fast, accurate time-series trend
 
 ### Final Audit Dashboard Output
 <img width="1863" height="608" alt="image" src="https://github.com/user-attachments/assets/ac6fb02a-6e4c-47e8-b97e-5deb3ea6cdc7" />
+
+<img width="3300" height="1650" alt="ltv_cac_trends" src="https://github.com/user-attachments/assets/af60781e-30a7-4f07-9964-bd97f6c96b93" />
+<img width="1800" height="1500" alt="risk_distribution_donut" src="https://github.com/user-attachments/assets/7c59c92d-2283-452f-bb39-94f4acd05c7c" />
+
+
 
 ## 🤖 AI Engine Setup & Core Prompt
 The core analytical intelligence of this workflow is powered by the **Make AI Toolkit**. Instead of using hardcoded programming scripts, an advanced, context-aware prompt enforces multi-source structural alignment and granular root-cause reporting.
@@ -112,7 +118,8 @@ To minimize token costs and eliminate mathematical hallucination risks, time-ser
 
 * Directional Trends (Columns K, N, Q): Dynamically maps trajectories to localized indicators using nested IF logical states.
 
-*Data sample: business_metrics_raw.xlsx*
+*Data sample: business_metrics_raw.xlsx
+Output: Reconciliation_Output.xlsx*
 
 ---
 
